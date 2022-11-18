@@ -4,6 +4,7 @@ from tkinter import *
 from tkinter import messagebox
 from PIL import Image, ImageTk
 import tkinter.ttk as ttk
+from ttkthemes import *
 from commands import *
 from state import GlobalState
 import constants
@@ -15,9 +16,9 @@ state = GlobalState()
 # rows = [i for i in cursor]
 # print(rows)
 
-window = Tk()
-windowWidth = 670
-windowHeight = 650
+window = ThemedTk(theme="arc")
+windowWidth = 1000
+windowHeight = 580
 positionTop = int(window.winfo_screenheight()/2 - windowHeight/2)
 positionRight = int(window.winfo_screenwidth()/2 - windowWidth/2)
 window.title(constants.TITLE)
@@ -33,6 +34,28 @@ logo = ImageTk.PhotoImage(Image.open(r"./main.ico"))
 Label(window, text=constants.TITLE, 
       font=("Arial",20,  "bold"), 
       image=logo,compound=TOP).grid(row=0, column=0, columnspan=3, ipadx=20)
+
+# ------------- DE-REGISTER STUDENT
+deregisterFrame = Frame(window, bg="cornflowerblue")
+Label(deregisterFrame, text="Student De-Reregistration", bg="cornflowerblue", 
+      font=("Arial",15,  "bold")).grid(row=0, column=0, sticky=W, pady=10, 
+                                       columnspan=2)
+
+ttk.Separator(deregisterFrame, orient=HORIZONTAL).grid(row=0, 
+                                                 column=2,
+                                                 ipadx=180, 
+                                                 sticky=W, 
+                                                 columnspan=3)
+Label(deregisterFrame, text="Student ID", 
+      font=("Arial",10,  "bold"), bg="cornflowerblue").grid(row=1, column=0, sticky=W)
+studentID_entry = ttk.Entry(deregisterFrame)
+studentID_entry.grid(row=1, column=1, sticky=W)
+deregisterFrame.grid(
+    row=0, column=3, columnspan=2, padx=10, pady=10,
+    rowspan=1
+)
+# ------------- UPDATE STUDENT
+# ------------- FIND STUDENT
 
 # -------------- Auth Frame
 pass_ey = BooleanVar()
@@ -130,17 +153,134 @@ ttk.Separator(detailsFrame, orient=HORIZONTAL).grid(row=0,
                                                  ipadx=180, 
                                                  sticky=W, 
                                                  columnspan=3)
+# ---------- 
 Label(detailsFrame, text="Student Name", 
       font=("Arial",10,  "bold"), bg="white").grid(row=1, column=0, sticky=W)
 student_name_entry = ttk.Entry(detailsFrame)
 student_name_entry.grid(row=1, column=1, sticky=W)
+Button(detailsFrame,
+       text="CLEAR", font=("Arial", 10), 
+        width=10, bd=0, bg="black",
+        fg="white",
+        command= logout,
+        activebackground="white",
+        activeforeground="black"
+    ).grid(row=1, column=2, sticky=W, pady=4, padx=5)
 
 
+Label(detailsFrame, text="Student Surname", 
+      font=("Arial",10,  "bold"), bg="white").grid(row=2, column=0, sticky=W)
+student_surname_entry = ttk.Entry(detailsFrame)
+student_surname_entry.grid(row=2, column=1, sticky=W)
+Button(detailsFrame,
+       text="CLEAR", font=("Arial", 10), 
+        width=10, bd=0, bg="black",
+        fg="white",
+        command= logout,
+        activebackground="white",
+        activeforeground="black"
+    ).grid(row=2, column=2, sticky=W, pady=4, padx=5)
+
+Label(detailsFrame, text="Student Age", 
+      font=("Arial",10,  "bold"), bg="white").grid(row=3, column=0, sticky=W)
+student_age_entry = ttk.Entry(detailsFrame, )
+student_age_entry.grid(row=3, column=1, sticky=W)
+
+
+Button(detailsFrame,
+       text="CLEAR", font=("Arial", 10), 
+        width=10, bd=0, bg="black",
+        fg="white",
+        command= logout,
+        activebackground="white",
+        activeforeground="black"
+    ).grid(row=3, column=2, sticky=W, pady=4, padx=5)
+genders = "male,female".split(',')
+gender = StringVar(detailsFrame)
+gender.set("male")
+gender_menu = OptionMenu(detailsFrame, gender, *genders)
+Label(detailsFrame, text="Student Gender", 
+      font=("Arial",10,  "bold"), bg="white").grid(row=4, column=0, sticky=W)
+
+gender_menu.grid(row=4, column=1, sticky=W, pady=4, padx=5, ipadx=35)
+Button(detailsFrame,
+       text="RESET", font=("Arial", 10), 
+        width=10, bd=0, bg="black",
+        fg="white",
+        command= logout,
+        activebackground="white",
+        activeforeground="black"
+    ).grid(row=4, column=2, sticky=W, pady=4, padx=5)
+
+Button(detailsFrame,
+       text="REGISTER", font=("Arial", 10), 
+        width=10, bd=0, bg="black",
+        fg="white",
+        command= logout,
+        activebackground="white",
+        activeforeground="black"
+    ).grid(row=1, column=3, sticky=W, pady=4, padx=5)
+
+Button(detailsFrame,
+       text="NEW", font=("Arial", 10), 
+        width=10, bd=0, bg="black",
+        fg="white",
+        command= logout,
+        activebackground="white",
+        activeforeground="black"
+    ).grid(row=2, column=3, sticky=W, pady=4, padx=5)
+
+Button(detailsFrame,
+       text="LOCK", font=("Arial", 10), 
+        width=10, bd=0, bg="black",
+        fg="white",
+        command= logout,
+        activebackground="white",
+        activeforeground="black"
+    ).grid(row=3, column=3, sticky=W, pady=4, padx=5)
+  
 # Buttons [clear, register]
 
 detailsFrame.grid(row=2, column=0,
                   columnspan=3, ipadx=10, sticky=W, ipady=10)
 
+
+
+# --------------- Closing btn
+def closeApp():
+    res = messagebox.askyesnocancel(constants.TITLE,
+                                    "Are you sure you want to close the {} app?".format(constants.TITLE))
+    if res:
+        window.destroy()
+    else:
+        window.focus()
+        
+Button(window,
+       text="EXIT", font=("Arial", 12), 
+        width=15, bd=0, bg="red",
+        fg="white",
+        command= closeApp,
+        activebackground="white",
+        activeforeground="red"
+    ).grid(row=4, column=0, sticky=W, pady=10, padx=5)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# ===================================== 
 window.mainloop(0)
 # closing the connection
 conn.close()
